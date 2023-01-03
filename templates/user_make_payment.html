@@ -1,0 +1,308 @@
+{% include 'user_header.html' %}
+<body>
+    <div class="main-div">
+    <form action="" method="post">
+    
+    <div class="container">
+      <div class="mGrid">
+        <div class="total">
+          <p>total</p>
+          <p>₹{{data['total']}}</p>
+          <input type="hidden" name="total" value="{{data['total']}}">
+        </div>
+        <div class="detail">
+          <!-- <p>detail</p>
+          <ul>
+            <li>iPad Pro</li>
+            <li>$799</li>
+          </ul>
+          <ul>
+            <li>Apple Pencil</li>
+            <li>$99</li>
+          </ul> -->
+        </div>
+        <button class="pay" name="pay">pay now</button>
+      </div> 
+       <!-- Small Side Card detail -->
+      <div class="subContainer">
+        <p>{{data['username']}}</p>
+        <input type="hidden" name="username" value="{{data['username']}}">
+        <!-- svg Logo-->
+        <div class="visaCont">
+          <svg class="visa" enable-background="new 0 0 291.764 291.764" version="1.1" viewbox="5 70 290 200" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+            <path class="svgcolor" d="m119.26 100.23l-14.643 91.122h23.405l14.634-91.122h-23.396zm70.598 37.118c-8.179-4.039-13.193-6.765-13.193-10.896 0.1-3.756 4.24-7.604 13.485-7.604 7.604-0.191 13.193 1.596 17.433 3.374l2.124 0.948 3.182-19.065c-4.623-1.787-11.953-3.756-21.007-3.756-23.113 0-39.388 12.017-39.489 29.204-0.191 12.683 11.652 19.721 20.515 23.943 9.054 4.331 12.136 7.139 12.136 10.987-0.1 5.908-7.321 8.634-14.059 8.634-9.336 0-14.351-1.404-21.964-4.696l-3.082-1.404-3.273 19.813c5.498 2.444 15.609 4.595 26.104 4.705 24.563 0 40.546-11.835 40.747-30.152 0.08-10.048-6.165-17.744-19.659-24.035zm83.034-36.836h-18.108c-5.58 0-9.82 1.605-12.236 7.331l-34.766 83.509h24.563l6.765-18.08h27.481l3.51 18.153h21.664l-18.873-90.913zm-26.97 54.514c0.474 0.046 9.428-29.514 9.428-29.514l7.13 29.514h-16.558zm-160.86-54.796l-22.931 61.909-2.498-12.209c-4.24-14.087-17.533-29.395-32.368-36.999l20.998 78.33h24.764l36.799-91.021h-24.764v-0.01z" fill="#FFF"></path>
+            <path class="svgtipcolor" d="m51.916 111.98c-1.787-6.948-7.486-11.634-15.226-11.734h-36.316l-0.374 1.686c28.329 6.984 52.107 28.474 59.821 48.688l-7.905-38.64z" fill="#EFC75E"></path>
+          </svg>
+        </div>
+        <div class="cardNum">
+          <ul>
+            <input type="text" pattern="[0-9]{16}" maxlength="16"  name="cno" class="card-no">
+          </ul>
+        </div>
+        <div class="date">
+          <input type="month" class="exp" name="month">
+        </div>
+        <div class="ccv">
+          <input type="text" class="cvv" pattern="[0-9]{3}" maxlength="3">
+        </div>
+      </div>
+    </div>
+    <div class="backlayer"></div>
+  </body>
+</form>
+</div>
+  <style>
+    .total p{
+        font-weight: 900 !important;
+        color: red !important;
+    }
+.main-div{
+
+    background: rgb(0, 120, 110,.2);
+    /* background: red; */
+    height: 100vh;
+    width: 100%;
+
+}
+.pay{
+    margin-bottom:3rem ;
+}
+.cardNum{
+        height: 2rem !important;
+    }
+.exp{
+    border: transparent;
+    border-radius: 2px;
+    padding: .2rem .3rem;
+    font-size: .7em;
+    background: transparent; 
+}
+.cvv{
+    width: 95%;
+    border: transparent;
+    border-radius: 2px;
+    font-size: .7em;
+    background: transparent;
+    padding: .2rem .3rem;
+}
+
+.exp:focus,.cvv:focus,.card-no:focus{
+    border: 2px solid transparent !important;
+    outline:  None !important;
+}
+
+    .card-no{
+    width: 100%;
+    height: 34%;
+    /* background: red; */
+    background: transparent;
+    border: transparent;
+    border-radius: 2px;
+    font-size: .7em;
+    padding: 0px -5px;
+    }
+ .subContainer .cardNum:after, .subContainer .date:after, .subContainer .ccv:after {
+  position: absolute;
+  top: -25px;
+  font-family: "Roboto", sans-serif;
+  left: 0;
+  color: rgba(142, 190, 255, 0.9);
+  font-size: 13px; }
+
+.subContainer .date p, .subContainer .ccv p {
+  padding: 0;
+  margin: 0;
+
+  font-size: 15px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: lighter;
+  text-align: center;
+  padding: 4px 20px;
+  padding-right: 25px; }
+
+* {
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0; }
+
+body {
+  overflow: hidden; }
+
+.container {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  background: #FFF;
+  box-shadow: 0px 0px 40px 1px #eee;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-between;
+  grid-template-areas: 'mGrid card';
+  min-height: 0;
+  min-width: 0;
+  border-radius: 9px;
+  z-index: 7; }
+
+.mGrid {
+  grid-area: mGrid;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  overflow: hidden;
+  justify-content: center;
+  margin-top: 15px;
+  margin-left: -10px; }
+
+.total {
+  padding-top: 130px;
+  align-self: end; }
+  .total p {
+    text-align: center;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #808eab;
+    letter-spacing: .15rem; }
+    .total p:last-child {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #0b82f8;
+      padding-top: 10px;
+      font-family: "Roboto", sans-serif; }
+
+.detail {
+  font-family: "Roboto", sans-serif;
+  align-self: start;
+  display: grid;
+  margin-top: 32px;
+  grid-template-rows: repeat(3, 1fr); }
+  .detail p {
+    text-align: center;
+    font-size: 15px;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #808eab;
+    letter-spacing: .15rem;
+    margin-bottom: 10px; }
+  .detail ul {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    font-family: "Roboto", sans-serif;
+    justify-content: center;
+    align-content: start; }
+    .detail ul li {
+      display: inline-block;
+      color: #515860;
+      text-align: left;
+      font-size: 15px; }
+      .detail ul li:last-child {
+        text-align: right;
+        color: #0b82f8;
+        font-family: "Roboto", sans-serif; }
+
+button {
+  display: block;
+  justify-self: center;
+  align-self: center;
+  font-family: "Open Sans", sans-serif;
+  background: #ffffff;
+  color: #0b82f8;
+  border: 1px solid #0b82f8;
+  text-transform: uppercase;
+  font-size: .97rem;
+  opacity: .8;
+  font-weight: lighter;
+  padding: 7px 40px;
+  border-radius: 1.6rem;
+  cursor: pointer;
+  outline: none;
+  transition: all .2s linear; }
+  button:hover {
+    transition: all .2s linear;
+    background: #0b82f8;
+    color: #FFF; }
+
+.subContainer {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 270px;
+  width: 400px;
+  border-radius: 9px;
+  font-family: "Roboto", sans-serif;
+  bottom: 0;
+  color: #fff;
+  min-height: 0;
+  min-width: 0;
+  background: #1f8fff;
+  box-shadow: -10px 10px 60px 10px #ADB7C4;
+  grid-area: card;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas: "name name  . . . visa visa "  "cardNum cardNum cardNum cardNum cardNum . ." " date date date date . ccv ccv "; }
+  .subContainer p, .subContainer .visaCont, .subContainer .cardNum, .subContainer .date, .subContainer .ccv {
+    margin-left: 35px;
+    margin-top: -25px;
+ }
+  .subContainer p {
+    padding-top: 25px;
+    font-weight: 600;
+    grid-area: name;
+    margin-top: 0px; }
+  .subContainer .visaCont {
+    display: grid;
+    grid-area: visa;
+    overflow: hidden;
+    margin: 0;
+    justify-self: center;
+    align-self: center; }
+    .subContainer .visaCont svg {
+      height: 50px;
+      width: 100px; }
+  .subContainer .cardNum {
+    position: relative;
+    grid-area: cardNum;
+    background: #3799ff;
+    align-self: center;
+    /* padding: 5px 2px; */
+    font-size: 19px; }
+    .subContainer .cardNum:after {
+      content: 'Credit  Card  Number'; }
+    .subContainer .cardNum ul {
+      list-style-type: none;
+      text-align: center; }
+      .subContainer .cardNum ul li {
+        display: inline-block;
+        font-family: "Montserrat", sans-serif;
+        margin: 0 auto;
+        letter-spacing: 1px; }
+        .subContainer .cardNum ul li:last-child {
+          text-align: right; }
+  .subContainer .date {
+    position: relative;
+    grid-area: date;
+    background: #3799ff;
+    align-self: center;
+    justify-self: left; }
+    .subContainer .date:after {
+      content: 'Expiration'; }
+  .subContainer .ccv {
+    position: relative;
+    grid-area: ccv;
+    align-self: center;
+    justify-self: left;
+    background: #3799ff;
+    margin-left: 0; }
+    .subContainer .ccv:after {
+      content: 'CCV'; }
+    .subContainer .ccv p {
+      padding: 4px 12px;
+      letter-spacing: 1px; }
+
+
+  </style>

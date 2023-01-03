@@ -1,0 +1,39 @@
+{% include 'user_header.html' %}
+
+<center>
+    <h1>View Bid </h1>
+    <form action="" method="post">
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Bid Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            {% for i in data['viewbid'] %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{i['u_fname']}}</td>
+                <td>{{i['u_lname']}}</td>
+                <td>{{i['u_phone']}}</td>
+                <td>{{i['bid_amount']}}</td>
+                <td>{{i['date_time']}}</td>
+                {% if i['bid_status']=='winner' %}
+                <td style="color: red;">Winner</td>
+                {% endif %}
+
+
+            </tr>
+            {% endfor %}
+            {% if data['viewbid'][0]['auction_status']=='stop' %}
+
+            <td colspan="6" align="right"><a href="viewwinners?bid={{data['viewbid'][0]['bid_id']}}" class="btn btn-success btn-sm">View Winner Details</a></td>
+            {% endif %}
+        </table>
+    </form>
+</center>
+
+{% include 'footer.html' %}

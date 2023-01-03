@@ -1,0 +1,104 @@
+{% include 'user_header.html' %}
+
+
+
+<center>
+    <h1 align="center">Manage Porduct</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>Category</th>
+                <td>
+                    <select name="cat" id="" class="form-control">
+                        <option value="{% if data['upd'] %}{{data['upd'][0]['cat_id']}}{% endif %}">{% if data['upd'] %}{{data['upd'][0]['cat_name']}} {% else %} Select Catgeory {% endif %}</option>
+                        {% for i in data['cate'] %}
+                        <option value="{{i['cat_id']}}">{{i['cat_name']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Subcategory</th>
+                <td>
+                    <select name="subcat" id="" class="form-control">
+                        <option value="{% if data['upd'] %}{{data['upd'][0]['subcat_id']}}{% endif %}">{% if data['upd'] %}{{data['upd'][0]['subcat_name']}} {% else %} Select SubCatgeory {% endif %}</option>
+                        {% for i in data['subcate'] %}
+                        <option value="{{i['subcat_id']}}">{{i['subcat_name']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Item Name</th>
+                <td><input type="text" name="iname" class="form-control" required value="{% if data['upd'] %}{{data['upd'][0]['item_name']}}{% endif %}"></td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td><input type="text" name="desc"  class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['item_desc']}}{% endif %}" required></td>
+            </tr>
+            {% if data['upd'] %}
+            <tr>
+                <th>image</th>
+                <td><img src="/{{data['upd'][0]['item_image']}}" alt="" width="50" height="50"></td>
+            </tr>
+            <tr>
+                <th></th>
+                <td><input type="file" name="image" class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['item_image']}}{% endif %}" ></td>
+            </tr>
+            {% else %}
+            <tr>
+                <th>Image</th>
+                <td><input type="file" name="image" class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['item_image']}}{% endif %}" required></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th>Amount</th>
+                <td><input type="text" name="amt" class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['item_amount']}}{% endif %}" required></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"> <input type="submit" {% if data['upd'] %} name="update" value="Update" {% else %}  name="add" value="Add" {% endif %} class="btn btn-success"></td>
+            </tr>
+           
+        </table>
+
+        <h2>View Products</h2>
+        <table class="table" style="width: 900px;">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>image</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Subcategory</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+            {% for i in data['proview'] %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{i['item_name']}}</td>
+                <td><img src="/{{i['item_image']}}" alt="" style="width: 250px; height: 200px;"></td>
+                <td>{{i['item_desc']}}</td>
+                <td>{{i['cat_name']}}</td>
+                <td>{{i['subcat_name']}}</td>
+                <td>{{i['item_amount']}}</td>
+                {% if i['item_status']=='active' %}
+                <td>Active</td>
+                <td><a href="manageauction?proid={{i['item_id']}}&dummyid=1" class="btn btn-info btn-sm">Add To Auction</a></td>
+
+                {% elif i['item_status']=='Added to auction' %}
+                <td>Added to auction</td>
+                <td><a href="manageauction?proid={{i['item_id']}}&dummyid=0" class="btn btn-info btn-sm">View Auction</a></td>
+                {% endif %}
+                <td><a href="?action=upd&id={{i['item_id']}}" class="btn btn-warning btn-sm">Update</a></td>
+                <td><a href="?action=delete&id={{i['item_id']}}" class="btn btn-danger btn-sm">Delete</a></td>
+
+            </tr>
+            {% endfor %}
+           
+        </table>
+    </form>
+</center>
+
+
+{% include 'footer.html' %}

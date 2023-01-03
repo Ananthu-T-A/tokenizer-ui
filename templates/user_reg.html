@@ -1,0 +1,62 @@
+{% include 'public_header.html' %}
+
+<center>
+    <h1>User Registration</h1>
+    <form action="" method="post">
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>First Name</th>
+                <td><input type="text" name="fname" required class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Last Name</th>
+                <td><input type="text" name="lname" required class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td><input type="radio" name="gen" >male <input type="radio" name="gen">female<td>
+            </tr>
+            <tr>
+                <th>Date Of Birth</th>
+                <td><input type="date" name="dob" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>phone</th>
+                <td><input type="number" name="phone" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>House No</th>
+                <td><input type="text" name="hno" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>Street</th>
+                <td><input type="text" name="street" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>District</th>
+                <td><input type="text" name="dist" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>State</th>
+                <td><input type="text" name="state" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>Pincode</th>
+                <td><input type="text" name="pin" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td><input type="text" name="uname" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td><input type="password" name="passw" required class="form-control"></td> 
+            </tr>
+            <tr>
+                <td colspan="2" align="center" ><input type="submit" name="reg" value="Register" class="btn btn-success"></td>
+            </tr>
+        </table>
+    </form>
+</center>
+
+{% include 'footer.html' %}

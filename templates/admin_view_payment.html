@@ -1,0 +1,38 @@
+{% include 'admin_header.html' %}
+
+<center>
+    <h1>View Winner </h1>
+    <form action="" method="post">
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Amount</th>
+                <th>Card No</th>
+                <th>Exp date</th>
+                <th>Payment Date</th>
+                <th>Status</th>
+            </tr>
+            {% for i in data['viewpay'] %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{i['u_fname']}}</td>
+                <td>{{i['u_lname']}}</td>
+                <td>{{i['bid_amount']}}</td>
+                <td>{{i['card_no']}}</td>
+                <td>{{i['exp_date']}}</td>
+                <td>{{i['payment_date']}}</td>
+                <td>{{i['payment_status']}}</td>
+<!-- 
+                {% if i['bid_status']=='paid' %}
+
+                <td><a href="viewpayment?bid={{i['bid_id']}}" class="btn btn-success">View Payment</a></td>
+                {% endif %} -->
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</center>
+
+{% include 'footer.html' %}

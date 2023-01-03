@@ -1,0 +1,133 @@
+{% include 'user_header.html' %}
+
+
+<center>
+<h1>Make Bid</h1>
+    <form method="post">
+        
+        <table style="width: 600px;" class="table">
+            <tr >
+                <span id="spaninp" class="warning-sp">
+                    <label for="" style="padding: 5px 10px;background: rgba(255, 0, 0, .2);border-radius: 10px;">warning:Bid Amount Must Be GraterThan ₹ {{data['amount']}}</label>
+                </span>
+                <input type="hidden" value="{{data['amount']}}" id="amtinp" >
+
+            </tr>
+            <tr>
+                <th>Bid Amount</th>
+                <td><input id="bidinp" onfocus="moveChange()" oninput="handover()" onblur="leaveFn()" onmouseenter="moveChange()"  type="number"  name="bamt" class="form-control" required></td>
+            </tr>
+            <tr>
+                <td align="center"  colspan="2"><input id="bidsub" type="submit" name="bid" value="Make Bid" class="btn btn-success"></td>
+            </tr>
+        </table>
+
+    </form>
+
+
+
+{% if data['makebid'] %}
+
+    <h1>View Bid </h1>
+    <form action="" method="post">
+        <table class="table" style="width: 800px;">
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Bid Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            {% for i in data['makebid'] %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{i['u_fname']}}</td>
+                <td>{{i['u_lname']}}</td>
+                <td>{{i['u_phone']}}</td>
+                <td>{{i['bid_amount']}}</td>
+                <td>{{i['date_time']}}</td>
+
+                {% if i['bid_status']=='winner' %}
+                <td style="color: red;">Winner</td>
+               
+                    <td><a href="makepayment?bid={{i['bid_id']}}&amount={{i['bid_amount']}}&username={{i['u_fname']}}{{i['u_lname']}}" > <span id="pay"> Make Payment </span></a></td>
+               
+                {% else %}
+                <td>Bid</td>
+                {% endif %}
+
+
+            </tr>
+            {% endfor %}
+            
+        </table>
+    </form>
+</center>
+{% else %}
+
+<center>
+    <p class="alert alert-danger">
+        Be The First. Make A BId
+    </p>
+
+</center>
+{% endif %}
+
+<style>
+    .warning-sp{
+        margin-right: 20rem;
+        color: red;
+        opacity: 0;
+        font-size: .7em;
+        transition:all 1s;
+    }
+    #bidsub{
+        /* opacity: 0; */
+        display: none;
+        transition: all .8s;
+    }
+    #pay {
+        background: rgb(48, 134, 214);
+        box-shadow: 1px 1px 04px #000;
+        padding: .5rem .5rem;
+        cursor: pointer;
+        color: #000;
+        border-radius: 4px;
+    }
+    td a{
+        text-decoration: none;
+    }
+</style>
+
+<script>
+    function moveChange(){
+
+        document.getElementById("spaninp").style.opacity="1"
+        x = document.getElementById("bidinp").value
+        y = document.getElementById("amtinp").val
+
+    } 
+
+    function leaveFn(){
+        document.getElementById("spaninp").style.opacity="0"
+    }
+
+    function handover(){
+        x = document.getElementById("bidinp").value
+        y = document.getElementById("amtinp").value
+        x = parseInt(x)
+        y = parseInt(y)
+    if (x > y){
+        
+        document.getElementById("bidsub").style.display="block"
+        
+        }
+    else{
+        document.getElementById("bidsub").style.display="none"
+    }
+    }
+</script>
+
+{% include 'footer.html' %}

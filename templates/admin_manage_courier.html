@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="managecat"> Manage Category</a>
+    <a href="managesubcat">Manage SubCategory</a>
+    <a href="viewuser">View User</a>
+    <a href="managecour">Manage Courier</a>
+    <a href="viewauction">View Auction</a>
+<!-- <script>
+    window.onbeforeunload = function() {
+   localStorage.setItem(name, $('cname').val());
+//    localStorage.setItem(phone, $('').val());
+//    localStorage.setItem(subject, $('#inputAddress').val());
+}
+window.onload = function() {
+   var name = localStorage.getItem(name);
+   var phone = localStorage.getItem(phone);
+   if (name !== null) $('#inputName').val(name); if (phone !== null) $('#inputPhone').val(phone);
+   // ...
+} -->
+
+<!-- </script> -->
+<script>
+    function hideErr(){
+        
+        var err = document.getElementById("warning").innerText
+        if ( err.length ===0){
+                document.getElementById("err").style.display="static"
+
+            }
+    }
+</script>
+
+<style>
+    #err{
+        display: none;
+    }
+</style>
+
+
+<!-- <script>
+    x = document.getElementById("hai").value
+    if(x == 1){
+    let text="username alrady exist....."
+    document.getElementById("warning").innerHTML = text;
+    }
+
+   
+</script> -->
+
+<center>
+    <h1 align="center">Manage Courier</h1>
+    <form action="" method="post">
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>Courier Name</th>
+                <td><input type="text" name="cname" class="form-control" required value="{% if data['upd'] %}{{data['upd'][0]['cour_name']}}{% endif %}"></td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td><input type="text" name="phone" pattern[0-9]{10} class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['cour_phone']}}{% endif %}" required></td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td><input type="text" name="add" class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['cour_address']}}{% endif %}" required></td>
+            </tr>
+            <tr>
+                <th>District</th>
+                <td><input type="text" name="dist" class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['cour_district']}}{% endif %}" required></td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td><input type="text" name="state" class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['cour_state']}}{% endif %}" required></td>
+            </tr>
+            <tr>
+                <th>Pincode</th>
+                <td><input type="text" name="pin" pattern[0-9]{6} class="form-control" value="{% if data['upd'] %}{{data['upd'][0]['cour_pin']}}{% endif %}" required></td>
+            </tr>
+            {% if data['upd'] %}
+
+            {% else %}
+            <tr>
+                <th>Username</th>
+                   <td><input type="text" name="uname" class="form-control" required> </td>
+                  
+            </tr>
+            <tr id="err" >
+                <th></th>
+                <td> <p id="warning" style="color:red">{{ data['warning'] }}</p></td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td><input type="text" name="pwd" class="form-control" required></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td align="center" colspan="2"><input onclick="hideErr()" type="submit" {% if data['upd'] %} name="update" value="Update" {% else %} name="add" value="Add" {% endif %} class="btn btn-success"></td>
+            </tr>
+        </table>
+
+        <h2>View Courier</h2>
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>District</th>
+                <th>State</th>
+                <th>Pincode</th>
+                <th>Status</th>
+            </tr>
+            {% for i in data['catview'] %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{i['cour_name']}}</td>
+                <td>{{i['cour_phone']}}</td>
+                <td>{{i['cour_address']}}</td>
+                <td>{{i['cour_district']}}</td>
+                <td>{{i['cour_state']}}</td>
+                <td>{{i['cour_pin']}}</td>
+                {% if i['cour_status']=='active' %}
+                <td>Active</td>
+                <td><a href="?action=inactive&id={{i['courier_id']}}" class="btn btn-danger btn-sm">Inactive</a></td>
+                {% elif i['cour_status']=='inactive' %}
+                <td>Inactive</td>
+                <td><a href="?action=active&id={{i['courier_id']}}" class="btn btn-success btn-sm">Active</a></td>
+                {% endif %}
+                <td><a href="?action=upd&id={{i['courier_id']}}" class="btn btn-warning btn-sm">Update</a></td>
+                <td><a href="?action=delete&id={{i['courier_id']}}" class="btn btn-danger btn-sm">Delete</a></td>
+
+
+            </tr>
+            {% endfor %}
+           
+        </table>
+    </form>
+</center>
+
+
+{% include 'footer.html' %}

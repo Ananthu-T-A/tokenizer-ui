@@ -1,0 +1,256 @@
+{% include 'user_header.html' %}
+
+<center>
+    {% if data['dummy']=='1' %}
+    
+    <h1>Manage Auction</h1>
+    <form action="" method="post">
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>Start Time</th>
+                <td><input type="time" name="stime" class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Start Date</th>
+                <td><input type="date" name="sdate" class="form-control"></td>
+            </tr>
+            <tr>
+                <th>Start Amount</th>
+                <td> <input type="number" name="samt" class="form-control"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="add" value="ADD AUCTION" class="btn btn-success"></td>
+            </tr>
+        </table>
+    </form>
+   
+
+    {% elif data['dummy']=='0' %}
+
+    <h1>View Auction</h1>
+    <center>
+       
+        <form action="" method="post">
+          <div class="main-div">
+           {% for i in data['view'] %} 
+            <div class="main-sec1" " id="mm">
+                
+                <div class="image-sec">
+                    <img style="background: red ;" src="/{{i['item_image']}}" alt="" >
+                </div>
+                <div  class="feild-sec">
+                    <div class="details-sec">
+    
+                        <p>Item:{{i['item_name']}}</p>
+                        <p>Category :{{i['cat_name']}}</p> 
+                        <p>SubCategory : {{i['subcat_name']}}</p>
+                        <p> Description :{{i['item_desc']}}</p>
+                    </div>
+              
+                <div class="auction-sec">
+                    <p> Auction Status: {{i['auction_status']}}</p>
+                </div>
+                <div class="price-sec">
+                        <p> Start Price:₹{{i['start_amount']}}</p>
+                </div>
+                {% if i['auction_status']=='pending' %}
+                <div class="btns">
+                    <a href="?action=start&aid={{i['auction_id']}}&proid={{data['proid']}}&dummyid=0&amount={{i['start_amount']}}">Start</a>
+                    
+                </div>
+                
+                {% elif i['auction_status']=='start' %}
+                <div class="btns">
+                    <a href="?action=stop&aid={{i['auction_id']}}&proid={{data['proid']}}&dummyid=0">Stop</a>
+                    <a href="viewbid?action=vbid&aid={{i['auction_id']}}">View Bids</a>
+                    
+                </div>
+                {% elif i['auction_status']=='stop' %}
+                <div class="btns">
+                    <!-- <a href="?action=stop&aid={{i['auction_id']}}&proid={{data['proid']}}&dummyid=0">Stop</a> -->
+                    <a href="viewbid?action=vbid&aid={{i['auction_id']}}">View Bids</a>
+                    
+                </div>
+                {% endif %}
+            </div>
+           
+            </div>
+            {% endfor %}
+          </div>
+        </form>
+        {% endif %}
+    </center>
+   
+    <style>
+        .main-div{
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            background: #212333;
+            padding: 0px 4rem;
+          
+        }
+    
+    
+        @media ( min-width:600px) and (max-width:722px){
+            .image-sec img{
+            width: 100px!important;
+            height: 100px!important;
+            border-radius: 10px;
+        }
+    
+        .details-sec,.auction-sec,.price-sec{font-size: .6em !important;}
+    
+        .main-div{  padding: 0%;}
+    
+        .main-div{width: 100% !important;}
+        #mm{width: 100% !important;}
+        }
+    
+        @media (max-width:550px){
+            .image-sec img{
+            width: 100px!important; 
+            height: 100px!important;
+            border-radius: 10px;
+        } 
+        .details-sec,.auction-sec,.price-sec{font-size: .6em !important;}
+    
+        .main-div{  padding: 0%;}
+    
+        .main-div{width: 100% !important;}
+        #mm{width: 100% !important;}
+    
+        }
+        
+        @media ( min-width:722px) and (max-width:999px){
+            .image-sec img{
+            width: 150px!important;
+            height: 150px!important;
+            border-radius: 10px;
+        }
+    
+        .details-sec,.auction-sec,.price-sec{font-size: .6em !important;}
+    
+        .main-div{  padding: 0%;}
+    
+        .main-div{width: 100% !important;}
+        #mm{width: 100% !important;}
+        }
+        
+        /* background: red ; */
+        #mm{
+            background: #212333;
+            box-shadow: 8px 8px 10px #151722,
+                        -8px -8px 10px #25283b;
+            width: 80%;
+            /* display: none; */
+            display: flex;
+            height: 19rem;
+           /* padding-bottom: 20px; */
+           /* margin-top: 2rem; */
+            margin: 1rem 4rem;
+           /* margin-right: 20rem; */
+           border-radius: 10px 0px 0px 10px ;
+        }
+    
+        *{
+            margin: 0%;
+            padding: 0%;
+        }
+        
+        h1{
+            margin-left: 20px;
+        }
+        .image-sec{
+            /* padding: 10px; */
+            width: 20%;
+            display: flex;
+            /* background: red; */
+            justify-content: center;
+            align-items: center;
+            /* border-radius: 50%;  */
+            /* height: 14px; */
+        }
+    
+        .image-sec img{
+            width: 160px !important;
+    height: 139px !important;
+            border-radius: 10px !important;
+        }
+        .feild-sec{
+          /* padding-left: 4rem;  */
+          /* letter-spacing: 2px; */
+          width: 80%;
+          display: flex;
+          gap: 10px;
+            /* flex-direction: column; */
+          justify-content: center;
+          align-items: center;
+              
+          /* height: 100; */
+        }
+        .details-sec,.auction-sec,.price-sec{
+            display: flex;
+            flex-direction: column;
+            /* background: red;s */
+            justify-content: center;
+            align-items: center;
+            background: #25283b;
+            padding: 10px;
+            width: 25%;
+            height: 76%;
+            border-radius: 10px;
+            margin-top: .4rem;
+            font-size: small;
+            /* box-shadow: 8px 8px 10px #151722, */
+                        /* -8px -8px 10px #25283b; */
+
+        }
+        p{
+            color:#5a5454;
+        }
+    
+        @media (min-width:540px) and (max-width:610px){
+                img{
+                    width: 90px !important;
+                    height: 90px !important;
+                }
+    
+                .details-sec,.auction-sec,.price-sec{font-size: .6em !important;}
+        }
+        .btns{
+            background: #212333;
+            box-shadow: 8px 8px 10px #151722,
+                        -8px -8px 10px #25283b;
+                       
+            color: #5a5454;margin-right: .3rem;
+            position: relative;
+           
+        
+            
+            
+        }
+        .btns a{
+            text-decoration: none;
+            width: 1.5rem;
+            height: 1rem;
+            box-shadow: none !important;
+            border: none;
+            padding: .5rem 1rem;
+            background: #2e3146;
+            border-radius: 6px  ;
+            color: #fff;
+            font-size: .75em;
+            /* font-weight: 600; */
+        }
+    </style>
+    
+
+
+</center>
+
+{% include 'footer.html' %}

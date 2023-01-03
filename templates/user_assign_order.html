@@ -1,0 +1,62 @@
+{% include "user_header.html" %}
+
+
+<center>
+   
+    
+    <h1>Assign To Courier</h1>
+    <form action="" method="post">
+        <table class="table" style="width: 700px;">
+            <tr>
+                <th>Courier</th>
+                <td>
+                    <select name="cour" id="" class="form-control">
+                        <option value="">Select Courier</option>
+                        {% for i in data['cour'] %}
+                        <option value="{{i['courier_id']}}">{{i['cour_name']}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Delivery Date</th>
+                <td><input type="date" name="ddate" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th>Delivery Time</th>
+                <td><input type="time" name="dtime" class="form-control" required></td>
+            </tr>
+           
+            <tr>
+                <td colspan="2" align="center"><input type="submit" name="add" value="Assign " class="btn btn-success"></td>
+            </tr>
+        </table>
+    </form>
+   
+
+    <center>
+        <h2 style="margin-top: 50px;">Assign Deliveries</h2>
+        <table class="table" style="width: 600px;">
+            <tr>
+                <th>#</th>
+                <th>Customer Name</th>
+                <th>Delivery Name</th>
+                <th>Delivery Date</th>
+                <th>Delivery Time</th>
+                <th>Delivery Status</th>
+            </tr>
+            {% for i in data['delivery'] %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{i['cour_name']}}</td>
+                <td>{{i['u_fname']}}{{i['u_lname']}}</td>
+                <td>{{i['delivery_date']}}</td>
+                <td>{{i['delivery_time']}}</td>
+                <td>{{i['delivery_status']}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </center>
+
+
+{% include 'footer.html' %}
