@@ -1,0 +1,42 @@
+{% include 'courier_header.html' %}
+
+<center>
+    <h1>View Assigned Orders</h1>
+
+    <table class="table" style="width: 1000px;">
+        <tr>
+            <th>#</th>
+            <th>UserName</th>
+            <th>House Name</th>
+            <th>Street</th>
+            <th>District</th>
+            <th>State</th>
+            <th>Pin</th>
+            <th>Phone</th>
+            <th>Amount</th>
+            <th>Delivery Date</th>
+            <th>Delivery Status</th>
+        </tr>
+        {% for i in data['delivery'] %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{i['u_fname']}}{{i['u_lname']}}</td>
+            <td>{{i['u_houseno']}}</td>
+            <td>{{i['u_street']}}</td>
+            <td>{{i['u_district']}}</td>
+            <td>{{i['u_state']}}</td>
+            <td>{{i['u_pin']}}</td>
+            <td>{{i['u_phone']}}</td>
+            <td>{{i['bid_amount']}}</td>
+            <td>{{i['delivery_date']}}</td>
+            <td>{{i['delivery_status']}}</td>
+            {% if i['delivery_status']=='shipped' %}
+            <td><a href="?id={{i['delivery_id']}}" class="btn btn-success">Delivered</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+</center>
+
+{% include 'footer.html' %}

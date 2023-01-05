@@ -32,8 +32,8 @@ def login():
                 flash("welcome courier")
                 q="select * from courier where username='%s'"%(session['logid'])
                 res=select(q)
-                session['cidgi']=res[0]['courier_id']
-                return redirect(url_for('cour.chome'))
+                session['cid']=res[0]['courier_id']
+                return redirect(url_for('courier.chome'))
             else:
                 flash("please enter a valid username or password")
                 return redirect(url_for('public.login'))

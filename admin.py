@@ -243,3 +243,5 @@ def viewbids():
 
     data['viewbid']=select(q)
     return render_template('admin_view_bid.html',data=data)
+
+
