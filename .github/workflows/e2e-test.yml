@@ -21,17 +21,19 @@ jobs:
         python-version: '3.12'
 
     - name: Install uv
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Install backend dependencies
       run: |
         cd backend
-        ~/.cargo/bin/uv sync
+        uv sync
 
     - name: Start backend server
       run: |
         cd backend
-        ~/.cargo/bin/uv run python main.py &
+        uv run python main.py &
         echo $! > backend.pid
         # Wait for server to start
         for i in {1..30}; do
