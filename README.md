@@ -2,6 +2,8 @@
 
 A tool to visualize how different tokenizers split text into tokens. Each token is displayed with a unique color based on its token ID.
 
+![Screenshot](screenshot.png)
+
 ## Features
 
 - Multiple tokenizer support (GPT-2, Llama, Mistral, Gemma, Qwen, Phi, etc.)
