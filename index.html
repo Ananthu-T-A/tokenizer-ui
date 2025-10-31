@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tokenizer Visualizer</title>
+    <title>Tokenizer Visualizer - Multimodal</title>
     <style>
         * {
             margin: 0;
@@ -52,7 +52,7 @@
             color: #555;
         }
 
-        select {
+        select, button {
             padding: 10px 15px;
             border: 2px solid #ddd;
             border-radius: 6px;
@@ -62,13 +62,24 @@
             transition: border-color 0.3s;
         }
 
-        select:hover {
+        select:hover, button:hover {
             border-color: #667eea;
         }
 
-        select:focus {
-            outline: none;
+        button {
+            background: #667eea;
+            color: white;
             border-color: #667eea;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .input-section {
@@ -90,6 +101,63 @@
         textarea:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        .multimodal-input {
+            display: none;
+        }
+
+        .multimodal-input.active {
+            display: block;
+        }
+
+        .content-parts {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .content-part {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .content-part-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .content-part-type {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .remove-part {
+            color: #f44336;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .content-part textarea {
+            min-height: 80px;
+        }
+
+        .content-part img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+        }
+
+        .add-part-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .stats {
@@ -147,6 +215,18 @@
             border-radius: 2px;
             cursor: pointer;
             position: relative;
+        }
+
+        .token.image-token {
+            display: inline-block;
+            padding: 2px 6px;
+            font-weight: bold;
+            border: 2px solid #333;
+        }
+
+        .token.special-token {
+            opacity: 0.7;
+            font-style: italic;
         }
 
         .token:hover {
@@ -217,18 +297,38 @@
 <body>
     <div class="container">
         <h1>Tokenizer Visualizer</h1>
-        <p class="subtitle">Visualize how different tokenizers split text into tokens</p>
+        <p class="subtitle">Visualize how different tokenizers split text and images into tokens</p>
 
         <div class="controls">
             <label for="tokenizer-select">Tokenizer:</label>
             <select id="tokenizer-select">
                 <option value="">Loading tokenizers...</option>
             </select>
+
+            <div class="mode-switch">
+                <label>
+                    <input type="radio" name="mode" value="text" checked> Text Only
+                </label>
+                <label>
+                    <input type="radio" name="mode" value="multimodal"> Multimodal (Text + Images)
+                </label>
+            </div>
         </div>
 
-        <div class="input-section">
+        <div class="input-section text-input active">
             <label for="text-input">Enter text to tokenize:</label>
             <textarea id="text-input" placeholder="Type or paste your text here...">Hello, world! This is a tokenizer visualization tool.</textarea>
+        </div>
+
+        <div class="input-section multimodal-input">
+            <label>Add content parts (text and images will be interleaved):</label>
+            <div class="content-parts" id="content-parts">
+                <div class="empty-state">Click "Add Text" or "Add Image" to start</div>
+            </div>
+            <div class="add-part-buttons">
+                <button onclick="addTextPart()">Add Text</button>
+                <button onclick="addImagePart()">Add Image</button>
+            </div>
         </div>
 
         <div class="stats" id="stats" style="display: none;">
@@ -245,7 +345,7 @@
         <div class="output-section">
             <h2 class="section-title">Tokens</h2>
             <div class="tokens-container" id="tokens-output">
-                <div class="empty-state">Enter text above to see tokens</div>
+                <div class="empty-state">Enter content above to see tokens</div>
             </div>
         </div>
     </div>
@@ -254,25 +354,156 @@
         const API_URL = 'http://localhost:8000';
         let debounceTimer;
         let currentTokenizer = 'gpt2';
+        let multimodalTokenizers = [];
+        let contentParts = [];
+        let partIdCounter = 0;
 
         async function loadTokenizers() {
             try {
                 const response = await fetch(`${API_URL}/tokenizers`);
                 const data = await response.json();
 
+                multimodalTokenizers = data.multimodal_tokenizers || [];
+                const allTokenizers = [...data.tokenizers, ...multimodalTokenizers];
+
                 const select = document.getElementById('tokenizer-select');
-                select.innerHTML = data.tokenizers.map(t =>
-                    `<option value="${t}" ${t === currentTokenizer ? 'selected' : ''}>${t}</option>`
-                ).join('');
+                select.innerHTML = allTokenizers.map(t => {
+                    const isMultimodal = multimodalTokenizers.includes(t);
+                    return `<option value="${t}" ${t === currentTokenizer ? 'selected' : ''}>${t}${isMultimodal ? ' (multimodal)' : ''}</option>`;
+                }).join('');
 
                 select.addEventListener('change', (e) => {
                     currentTokenizer = e.target.value;
-                    tokenizeText();
+                    updateModeAvailability();
+                    tokenizeContent();
                 });
+
+                updateModeAvailability();
             } catch (error) {
                 console.error('Failed to load tokenizers:', error);
                 document.getElementById('tokenizer-select').innerHTML =
                     '<option value="gpt2">gpt2 (default)</option>';
+            }
+        }
+
+        function updateModeAvailability() {
+            const isMultimodal = multimodalTokenizers.includes(currentTokenizer);
+            const multimodalRadio = document.querySelector('input[value="multimodal"]');
+            const textRadio = document.querySelector('input[value="text"]');
+
+            if (!isMultimodal) {
+                multimodalRadio.disabled = true;
+                textRadio.checked = true;
+                updateInputMode('text');
+            } else {
+                multimodalRadio.disabled = false;
+            }
+        }
+
+        function updateInputMode(mode) {
+            const textInput = document.querySelector('.text-input');
+            const multimodalInput = document.querySelector('.multimodal-input');
+
+            if (mode === 'multimodal') {
+                textInput.classList.remove('active');
+                multimodalInput.classList.add('active');
+            } else {
+                textInput.classList.add('active');
+                multimodalInput.classList.remove('active');
+            }
+        }
+
+        document.querySelectorAll('input[name="mode"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                updateInputMode(e.target.value);
+                tokenizeContent();
+            });
+        });
+
+        function addTextPart() {
+            const id = partIdCounter++;
+            const part = { id, type: 'text', text: '' };
+            contentParts.push(part);
+            renderContentParts();
+        }
+
+        function addImagePart() {
+            const id = partIdCounter++;
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const part = { id, type: 'image', image: e.target.result };
+                        contentParts.push(part);
+                        renderContentParts();
+                        tokenizeContent();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        function removePart(id) {
+            contentParts = contentParts.filter(p => p.id !== id);
+            renderContentParts();
+            tokenizeContent();
+        }
+
+        function updateTextPart(id, text) {
+            const part = contentParts.find(p => p.id === id);
+            if (part) {
+                part.text = text;
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(tokenizeContent, 300);
+            }
+        }
+
+        function renderContentParts() {
+            const container = document.getElementById('content-parts');
+
+            if (contentParts.length === 0) {
+                container.innerHTML = '<div class="empty-state">Click "Add Text" or "Add Image" to start</div>';
+                return;
+            }
+
+            container.innerHTML = contentParts.map(part => {
+                if (part.type === 'text') {
+                    return `
+                        <div class="content-part">
+                            <div class="content-part-header">
+                                <span class="content-part-type">Text</span>
+                                <span class="remove-part" onclick="removePart(${part.id})">&times;</span>
+                            </div>
+                            <textarea onchange="updateTextPart(${part.id}, this.value)"
+                                      placeholder="Enter text...">${part.text || ''}</textarea>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="content-part">
+                            <div class="content-part-header">
+                                <span class="content-part-type">Image</span>
+                                <span class="remove-part" onclick="removePart(${part.id})">&times;</span>
+                            </div>
+                            <img src="${part.image}" alt="Uploaded image">
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        async function tokenizeContent() {
+            const mode = document.querySelector('input[name="mode"]:checked').value;
+
+            if (mode === 'text') {
+                await tokenizeText();
+            } else {
+                await tokenizeMultimodal();
             }
         }
 
@@ -309,27 +540,81 @@
                 }
 
                 const data = await response.json();
-
-                output.innerHTML = data.tokens.map(token => {
-                    const displayToken = token.token
-                        .replace(/\n/g, '↵\n')
-                        .replace(/ /g, '·')
-                        .replace(/\t/g, '→');
-
-                    return `<span class="token" style="background-color: ${token.color};">
-                        ${escapeHtml(displayToken)}
-                        <span class="token-tooltip">ID: ${token.token_id}</span>
-                    </span>`;
-                }).join('');
-
-                tokenCount.textContent = data.token_count;
-                charCount.textContent = text.length;
-                stats.style.display = 'flex';
-
+                displayTokens(data, text.length);
             } catch (error) {
                 console.error('Tokenization error:', error);
                 output.innerHTML = `<div class="error">Error: ${error.message}. Make sure the backend server is running on port 8000.</div>`;
             }
+        }
+
+        async function tokenizeMultimodal() {
+            const output = document.getElementById('tokens-output');
+            const stats = document.getElementById('stats');
+
+            if (contentParts.length === 0) {
+                output.innerHTML = '<div class="empty-state">Add content parts above to see tokens</div>';
+                stats.style.display = 'none';
+                return;
+            }
+
+            output.innerHTML = '<div class="loading"><div class="spinner"></div>Tokenizing...</div>';
+            stats.style.display = 'none';
+
+            try {
+                const content = contentParts.map(part => ({
+                    type: part.type,
+                    text: part.text,
+                    image: part.image
+                }));
+
+                const response = await fetch(`${API_URL}/tokenize`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: content,
+                        tokenizer_name: currentTokenizer
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const charCount = contentParts.filter(p => p.type === 'text').reduce((sum, p) => sum + (p.text?.length || 0), 0);
+                displayTokens(data, charCount);
+            } catch (error) {
+                console.error('Tokenization error:', error);
+                output.innerHTML = `<div class="error">Error: ${error.message}. Make sure the backend server is running on port 8000.</div>`;
+            }
+        }
+
+        function displayTokens(data, charCount) {
+            const output = document.getElementById('tokens-output');
+            const stats = document.getElementById('stats');
+            const tokenCountEl = document.getElementById('token-count');
+            const charCountEl = document.getElementById('char-count');
+
+            output.innerHTML = data.tokens.map(token => {
+                const displayToken = token.token
+                    .replace(/\n/g, '↵\n')
+                    .replace(/ /g, '·')
+                    .replace(/\t/g, '→');
+
+                const typeClass = token.type === 'image' ? 'image-token' :
+                                 token.type === 'special' ? 'special-token' : '';
+
+                return `<span class="token ${typeClass}" style="background-color: ${token.color};">
+                    ${escapeHtml(displayToken)}
+                    <span class="token-tooltip">ID: ${token.token_id} (${token.type})</span>
+                </span>`;
+            }).join('');
+
+            tokenCountEl.textContent = data.token_count;
+            charCountEl.textContent = charCount;
+            stats.style.display = 'flex';
         }
 
         function escapeHtml(text) {
@@ -340,11 +625,11 @@
 
         document.getElementById('text-input').addEventListener('input', () => {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(tokenizeText, 300);
+            debounceTimer = setTimeout(tokenizeContent, 300);
         });
 
         loadTokenizers();
-        tokenizeText();
+        tokenizeContent();
     </script>
 </body>
 </html>

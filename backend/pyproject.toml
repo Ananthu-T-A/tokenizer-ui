@@ -8,4 +8,7 @@ dependencies = [
     "uvicorn>=0.32.0",
     "transformers>=4.46.0",
     "torch>=2.5.0",
+    "torchvision>=0.20.0",
+    "pillow>=10.0.0",
+    "qwen-vl-utils>=0.0.8",
 ]
