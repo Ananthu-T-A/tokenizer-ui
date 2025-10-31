@@ -1,0 +1,11 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Tokenizer API backend"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "transformers>=4.46.0",
+    "torch>=2.5.0",
+]
