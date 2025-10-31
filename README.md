@@ -2,7 +2,11 @@
 
 A tool to visualize how different tokenizers split text and images into tokens. Each token is displayed with a unique color based on its token ID.
 
-![Screenshot](screenshot.png)
+![Text Tokenization](screenshot.png)
+*Text-only tokenization with GPT-2*
+
+![Multimodal Tokenization](screenshot_multimodal.png)
+*Multimodal tokenization with Qwen2-VL (text + image)*
 
 ## Features
 
