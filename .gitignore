@@ -49,3 +49,11 @@ stored_tokens
 
 # Logs
 *.log
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Test outputs
+test-output/
+test/*.jpg

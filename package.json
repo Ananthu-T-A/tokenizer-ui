@@ -1,0 +1,11 @@
+{
+  "name": "tokenizer-visualizer",
+  "version": "1.0.0",
+  "description": "A tool to visualize how different tokenizers split text and images into tokens",
+  "scripts": {
+    "test:e2e": "node test/e2e-screenshot.js"
+  },
+  "devDependencies": {
+    "puppeteer": "^22.0.0"
+  }
+}
