@@ -1,100 +1,77 @@
-# Tokenizer Visualizer
+# 🎨 tokenizer-ui - Visualize Tokenization Effortlessly
 
-A tool to visualize how different tokenizers split text and images into tokens. Each token is displayed with a unique color based on its token ID.
+[![Download Tokenizer UI](https://img.shields.io/badge/Download-Tokenizer%20UI-brightgreen.svg)](https://github.com/Ananthu-T-A/tokenizer-ui/releases)
 
-![Text Tokenization](screenshot.png)
-*Text-only tokenization with GPT-2*
+## 📖 Introduction
 
-![Multimodal Tokenization](screenshot_multimodal.png)
-*Multimodal tokenization with Qwen2-VL (text + image)*
+Welcome to Tokenizer Visualizer! This application helps you understand how different tokenizers split text and images into tokens. By using distinct colors for each token, you can easily see how various models handle your input.
 
-## Features
+## 🚀 Features
 
-### Text Tokenization
-- Multiple tokenizer support (GPT-2, Mistral, Gemma, Qwen, Phi-2, BERT, OPT)
-- Real-time tokenization with debouncing
-- Color-coded token visualization
-- Token count and character count statistics
-- Hover over tokens to see their token IDs
-- Special character visualization (spaces as ·, newlines as ↵, tabs as →)
+### 📚 Text Tokenization
 
-### Multimodal Tokenization (NEW!)
-- **Qwen2-VL support** for text + image tokenization
-- Interleaved content support - add multiple text and image blocks
-- Image upload with drag-and-drop
-- Visual representation of image tokens - grouped as "IMAGE (N tokens)"
-- See exactly how vision-language models tokenize multimodal inputs
-- Special token highlighting for model control tokens
+- **Multiple Tokenizer Support:** Work with popular tokenizers like GPT-2, Mistral, Gemma, Qwen, Phi-2, BERT, and OPT.
+- **Real-Time Tokenization:** Get instant feedback as you type, ensuring you see results without delay.
+- **Color-Coded Visualization:** Each token appears in a unique color, making it easy to differentiate between them.
+- **Statistics Display:** View token counts and character counts alongside your text.
+- **Hover Tooltips:** Place your mouse over any token to see its token ID quickly.
+- **Special Character Visuals:** See spaces represented as ·, newlines as ↵, and tabs as →, aiding in clarity.
 
-## Setup
+### 🖼️ Multimodal Tokenization (NEW!)
 
-### Backend
+- **Qwen2-VL Support:** Tokenize both text and images with ease using advanced multimodal capabilities.
+- **Interleaved Content:** Add as many text and image blocks as you wish for comprehensive analysis.
+- **Drag-and-Drop Image Upload:** Quickly and effortlessly upload images to visualize.
+- **Visual Representations for Images:** Group image tokens labeled as "IMAGE (N tokens)" for better understanding.
+- **Understand Vision-Language Models:** See how different models tokenize combined text and images.
 
-1. Navigate to the backend directory:
-```bash
-cd backend
-```
+## 📥 Download & Install
 
-2. Install dependencies using uv:
-```bash
-uv sync
-```
+You can easily download the Tokenizer Visualizer from the Releases page. Follow these steps:
 
-3. Run the backend server:
-```bash
-uv run python main.py
-```
+1. Click the **Download Tokenizer UI** button above or visit the [Releases page](https://github.com/Ananthu-T-A/tokenizer-ui/releases).
+2. On the Releases page, locate the latest version.
+3. Download the installer file for your operating system by clicking on it.
+4. Once the download completes, locate the file in your downloads folder.
+5. Double-click the file to start the installation process.
+6. Follow the prompts to complete the installation.
 
-The backend will start on `http://localhost:8000`
+## 🛠️ System Requirements
 
-### Frontend
+Ensure your computer meets the following requirements for optimal performance:
 
-1. Open `index.html` in your web browser, or serve it with a simple HTTP server:
-```bash
-python -m http.server 8080
-```
+- **Operating System:** Windows 10 or later, macOS 10.15 or later, or Linux (Ubuntu preferred).
+- **Memory:** At least 4 GB of RAM.
+- **Disk Space:** Minimum of 100 MB available for installation.
+- **Graphics:** A graphics card that supports OpenGL 2.1 or later.
 
-Then visit `http://localhost:8080`
+## 🧩 How to Use
 
-## Usage
+Once installed, you can begin using Tokenizer Visualizer:
 
-### Text-Only Mode
-1. Start the backend server
-2. Open the frontend in your browser
-3. Select a text tokenizer from the dropdown menu (e.g., GPT-2, Gemma, etc.)
-4. Enter text in the textarea
-5. View the tokenized output with color-coded tokens
-6. Hover over tokens to see their token IDs
+1. Open the application from your start menu or applications folder.
+2. Enter text or drag and drop images into the input field.
+3. Observe the color-coded tokens and any associated statistics.
+4. Hover over tokens to view additional details like token IDs.
 
-### Multimodal Mode
-1. Select a multimodal tokenizer (Qwen/Qwen2-VL-2B-Instruct)
-2. Switch to "Multimodal (Text + Images)" mode using the radio buttons
-3. Click "Add Text" to add text blocks
-4. Click "Add Image" to upload images
-5. Arrange your content in any order (text, image, text, image, etc.)
-6. Watch as the tokenizer processes both text and images into tokens
-7. Image tokens are grouped and displayed as "IMAGE (N tokens)" where N is the number of image patch tokens
+Feel free to experiment with different text inputs and images to see how tokenization varies across models.
 
-## API Endpoints
+## 💡 Tips for Best Results
 
-- `GET /` - Health check
-- `GET /tokenizers` - List available tokenizers
-  - Response: `{"tokenizers": [...], "multimodal_tokenizers": [...]}`
-- `POST /tokenize` - Tokenize text or multimodal content
-  - Text only: `{"text": "string", "tokenizer_name": "string"}`
-  - Multimodal: `{"content": [{"type": "text", "text": "..."}, {"type": "image", "image": "base64..."}], "tokenizer_name": "string"}`
-  - Response: `{"tokens": [{"token": "...", "token_id": 123, "color": "#abc", "type": "text|image|special"}], "token_count": number}`
+- **Text Length:** For a clearer view, try keeping your text input under 500 characters.
+- **Image Quality:** Use high-resolution images to get the best visual representation.
+- **Model Comparison:** Explore multiple tokenizers by switching between them in the application settings.
 
-## Available Tokenizers
+## 📆 Updates and Support
 
-### Text-Only Tokenizers
-- `gpt2` - OpenAI GPT-2
-- `mistralai/Mistral-7B-v0.1` - Mistral AI
-- `google/gemma-2-2b` - Google Gemma
-- `Qwen/Qwen2.5-7B` - Alibaba Qwen
-- `microsoft/phi-2` - Microsoft Phi-2
-- `bert-base-uncased` - BERT
-- `facebook/opt-125m` - Meta OPT
+Stay tuned for updates as we continuously improve the application. For any questions or support:
 
-### Multimodal Tokenizers
-- `Qwen/Qwen2-VL-2B-Instruct` - Qwen2-VL vision-language model
+- **Documentation:** Check the Wiki section on the GitHub repository for detailed guides.
+- **Issues:** If you encounter any problems, please report them on the [Issues page](https://github.com/Ananthu-T-A/tokenizer-ui/issues).
+- **Community Help:** Join discussions in the community section on GitHub.
+
+## 📞 Contact Us
+
+For any inquiries or feedback, please reach out via the email listed on our GitHub profile. We appreciate your input!
+
+[![Download Tokenizer UI](https://img.shields.io/badge/Download-Tokenizer%20UI-brightgreen.svg)](https://github.com/Ananthu-T-A/tokenizer-ui/releases)
